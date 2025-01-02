@@ -1,5 +1,6 @@
 "use client"
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function signup() {
@@ -8,6 +9,7 @@ export default function signup() {
   })
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  const router = useRouter();
   const handleChange = (e: any) => {
     const { name, value } = e.target
     setformData((pre: any) => ({
@@ -17,9 +19,9 @@ export default function signup() {
   }
 
   const validateInputs = (): boolean => {
-    const { username, email, password, confirmpassword, mobileNumber } = formData;
+    const { username, email, password, confirmPassword, mobileNumber } = formData;
     const newErrors: Record<string, string> = {};
-
+    // console.log(password, confirmPassword)
     if (!mobileNumber) {
       newErrors.type = "Mobile number is required";
     }
@@ -40,17 +42,19 @@ export default function signup() {
     } else if (!passwordRegex.test(password)) {
       newErrors.password = "password should be 8 digit also upper and lower case ";
     }
-    if (!confirmpassword) {
-      newErrors.confirmpassword = "Confirm password is required";
-    } else if (password !== confirmpassword) {
-      newErrors.confirmpassword = "Confirm Password do not match";
+    if (!confirmPassword) {
+      newErrors.confirmPassword = "Confirm password is required";
+    } else if (password !== confirmPassword) {
+      newErrors.confirmPassword = "Confirm Password do not match";
     }
     setErrors(newErrors);
+    // console.log(newErrors, "========")
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async () => {
     if (!validateInputs()) return;
+    // console.log("vbncxmbcbvxmncvxmncv")
     const url = process.env.NEXT_PUBLIC_API_URL;
     try {
       const response = await fetch(`${url}auth/signup`, {
@@ -63,13 +67,14 @@ export default function signup() {
 
       if (response.ok) {
         const data = await response.json();
+        router.push('/auth/signup');
         console.log('Success:', data);
       } else {
         setErrors((prev) => ({ ...prev, email: "Email id is already register" }));
-        console.error('Error:', response.statusText);
+        console.log('Error:', response.statusText);
       }
     } catch (error) {
-      console.error('Request failed:', error);
+      console.log('Request failed:', error);
     }
   }
 
