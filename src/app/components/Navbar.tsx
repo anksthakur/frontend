@@ -3,15 +3,29 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 import { useAppContext } from '../context/ContextApi';
+import {toast} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Navbar = () => {
 
     const router = useRouter();
     const { userData } = useAppContext();
     const user = userData;
+        const showToast = (type: "success" | "error" | "warn", message: string) => {
+            toast[type](message, {
+              position: "bottom-right",
+              autoClose: 3000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              theme: "colored",
+            });
+          };
  
     const handleLogout = () => {
         localStorage.removeItem('token')
+        showToast("success",`${user?.data?.username} logout successfully`)
         router.push('/auth/login')       
     }
     return (

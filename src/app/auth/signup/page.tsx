@@ -2,6 +2,8 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import {toast} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function signup() {
   const [formData, setformData] = useState<any>({
@@ -17,6 +19,18 @@ export default function signup() {
       [name]: value
     }))
   }
+
+    const showToast = (type: "success" | "error" | "warn", message: string) => {
+      toast[type](message, {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "colored",
+      });
+    };
 
   const validateInputs = (): boolean => {
     const { username, email, password, confirmPassword, mobileNumber } = formData;
@@ -48,13 +62,11 @@ export default function signup() {
       newErrors.confirmPassword = "Confirm Password do not match";
     }
     setErrors(newErrors);
-    // console.log(newErrors, "========")
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async () => {
     if (!validateInputs()) return;
-    // console.log("vbncxmbcbvxmncvxmncv")
     const url = process.env.NEXT_PUBLIC_API_URL;
     try {
       const response = await fetch(`${url}auth/signup`, {
@@ -67,6 +79,7 @@ export default function signup() {
 
       if (response.ok) {
         const data = await response.json();
+        showToast("success","User register successfully")
         router.push('/auth/signup');
         console.log('Success:', data);
       } else {

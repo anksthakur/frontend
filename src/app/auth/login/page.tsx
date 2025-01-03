@@ -3,11 +3,14 @@ import { useAppContext } from "@/app/context/ContextApi";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import {toast} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState<any>({});
   const [loginError, setLoginError] = useState<string>("");
+  
   const router = useRouter();
   const { setUserData } = useAppContext();
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,6 +21,17 @@ export default function Login() {
     }));
   };
 
+      const showToast = (type: "success" | "error" | "warn", message: string) => {
+        toast[type](message, {
+          position: "bottom-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "colored",
+        });
+      };
   const validateInputs = (): boolean => {
     const { email, password } = formData;
     const newErrors: any = {};
@@ -52,6 +66,7 @@ export default function Login() {
 
     if (response.ok) {
       const data = await response.json();
+      showToast("success","User Login successfully")
       localStorage.setItem("token",data.accessToken)
       setUserData(data.existingUser);
       router.push('/');

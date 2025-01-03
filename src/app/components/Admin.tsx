@@ -118,7 +118,7 @@ const Admin = () => {
             ))}
           </select>
         </div>
-        {selectError}
+        {selectError }
         {errors && (
           <div className="text-red-500 mb-2">
             {errors.week && <p>{errors.week}</p>}
