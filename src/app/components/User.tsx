@@ -1,7 +1,8 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useAppContext } from "../context/ContextApi";
 
 interface UserData {
   _id: string;
@@ -14,11 +15,12 @@ interface UserData {
 
 const User = () => {
   const [fetchData, setfetchData] = useState<UserData[]>([]);
+  const { userData } = useAppContext();
   // const [formData,setformData]=useState<any>();
   const [week, setWeek] = useState<string>("");
   const [time, setTime] = useState<string>("");
   const [selectError, setselectError] = useState<string>("");
-
+const userId = userData?.data?._id
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -69,7 +71,7 @@ const User = () => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     const url = process.env.NEXT_PUBLIC_API_URL;
-    const formData = { weekday: week, slotTime: time };
+    const formData = { weekday: week, slotTime: time,userId };
     const response = await fetch(`${url}userdata`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },

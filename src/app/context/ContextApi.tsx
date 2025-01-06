@@ -12,6 +12,7 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 // Create a provider component
 export const AppProvider = ({ children }: any) => {
     const [userData, setUserData] = useState<any>(null);
+    
 
     useEffect(() => {
         const fetchData = async () => {

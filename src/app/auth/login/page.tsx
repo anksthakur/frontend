@@ -66,6 +66,7 @@ export default function Login() {
 
     if (response.ok) {
       const data = await response.json();
+      console.log(data)
       showToast("success","User Login successfully")
       localStorage.setItem("token",data.accessToken)
       setUserData(data.existingUser);
