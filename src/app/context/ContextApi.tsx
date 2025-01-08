@@ -24,6 +24,7 @@ export const AppProvider = ({ children }: any) => {
                         method: "GET",
                         headers: {
                             Authorization: `Bearer ${token}`,
+                            
                         }
                     });
                     if (response) {
