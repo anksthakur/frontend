@@ -80,7 +80,7 @@ export default function signup() {
       if (response.ok) {
         const data = await response.json();
         showToast("success","User register successfully")
-        router.push('/auth/signup');
+        router.push('/auth/login');
         console.log('Success:', data);
       } else {
         setErrors((prev) => ({ ...prev, email: "Email id is already register" }));

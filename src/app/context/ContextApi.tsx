@@ -13,18 +13,16 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 export const AppProvider = ({ children }: any) => {
     const [userData, setUserData] = useState<any>(null);
     
-
+    let token = localStorage.getItem("token");
     useEffect(() => {
-        const fetchData = async () => {
-            let token = localStorage.getItem("token");
+        const fetchData = async () => {         
             if (token) {
                 const url = process.env.NEXT_PUBLIC_API_URL;
                 try {
                     const response = await fetch(`${url}checktoken`, {
                         method: "GET",
                         headers: {
-                            Authorization: `Bearer ${token}`,
-                            
+                            Authorization: `Bearer ${token}`,                          
                         }
                     });
                     if (response) {
@@ -42,7 +40,7 @@ export const AppProvider = ({ children }: any) => {
             }
         };
         fetchData();
-    }, []);
+    }, [token]);
 
 
     return (

@@ -65,7 +65,7 @@ const User = () => {
       if (response.ok) {
         const data = await response.json();
         setfetchData(data?.data || []);
-        console.log("Get Slot:", data?.data);
+        // console.log("Get Slot:", data?.data);
       } else {
         showToast("error", "Failed to fetch user data.");
       }
